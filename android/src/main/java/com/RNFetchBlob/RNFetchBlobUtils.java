@@ -80,12 +80,6 @@ public class RNFetchBlobUtils {
 
             OkHttpClient.Builder builder = client.newBuilder();
             builder.sslSocketFactory(sslSocketFactory, x509TrustManager);
-            builder.hostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
 
             return builder;
         } catch (Exception e) {
