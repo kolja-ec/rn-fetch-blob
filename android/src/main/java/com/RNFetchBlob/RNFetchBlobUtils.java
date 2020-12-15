@@ -52,38 +52,4 @@ public class RNFetchBlobUtils {
         RNFetchBlob.RCTContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(RNFetchBlobConst.EVENT_MESSAGE, args);
     }
-
-    public static OkHttpClient.Builder getUnsafeOkHttpClient(OkHttpClient client) {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final X509TrustManager x509TrustManager = new X509TrustManager() {
-                @Override
-                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[]{};
-                }
-            };
-            final TrustManager[] trustAllCerts = new TrustManager[]{ x509TrustManager };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            OkHttpClient.Builder builder = client.newBuilder();
-            builder.sslSocketFactory(sslSocketFactory, x509TrustManager);
-
-            return builder;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
